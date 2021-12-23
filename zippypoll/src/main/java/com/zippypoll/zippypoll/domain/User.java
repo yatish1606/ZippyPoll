@@ -16,6 +16,6 @@ public class User {
     private Optional<String> profilePicture;
 
     public void createUser(String firstName, String lastName, String profilePicture) {
-        
+
     }
 }
