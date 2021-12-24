@@ -5,9 +5,7 @@ import com.zippypoll.zippypoll.model.Response;
 import com.zippypoll.zippypoll.repository.PollRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class PollService {
@@ -73,5 +71,29 @@ public class PollService {
                 .orElseThrow(() -> new RuntimeException(String.format("Cannot update poll with id as ", pollId)));
         savedPoll.setResponses(null);
         pollRepository.save(savedPoll);
+    }
+
+    public HashMap<HashMap<String, String>, Integer> getResponseStats(String pollId) {
+        Poll savedPoll = pollRepository.findById(pollId)
+                .orElseThrow(() -> new RuntimeException(String.format("Cannot update poll with id as ", pollId)));
+        List<Response> responses = new ArrayList<Response>();
+        HashMap<HashMap<String, String>, Integer> hashMap = new HashMap<HashMap<String, String>, Integer>();
+        for (HashMap<String, String> currentHashObject: savedPoll.getOptions()) {
+            for (HashMap.Entry<String, String> currentHash: currentHashObject.entrySet()) {
+                HashMap<String, String> keyValuePair = new HashMap<String, String>();
+                keyValuePair.put(currentHash.getKey(), currentHash.getValue());
+                hashMap.put(keyValuePair, 0);
+            }
+        }
+        if(savedPoll.getResponses() != null) {
+            responses.addAll(savedPoll.getResponses());
+            for (Response response: responses) {
+                HashMap<String, String> currentEntry = response.getSelectedOption();
+                hashMap.merge(currentEntry, 1, Integer::sum);
+            }
+        } else {
+
+        }
+        return hashMap;
     }
 }

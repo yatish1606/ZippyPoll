@@ -4,8 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Optional;
-
 @Document("user")
 public class User {
     @Id
@@ -14,12 +12,15 @@ public class User {
     private String firstName;
     private String lastName;
     private String profilePicture;
+    @Indexed(unique = true)
+    private String email;
 
-    public User(String id, String firstName, String lastName, String profilePicture) {
+    public User(String id, String firstName, String lastName, String profilePicture, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePicture = profilePicture;
+        this.email = email;
     }
 
     public String getId() {
@@ -52,5 +53,9 @@ public class User {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }
