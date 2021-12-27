@@ -2,10 +2,12 @@ package com.zippypoll.zippypoll.service;
 
 import com.zippypoll.zippypoll.model.Poll;
 import com.zippypoll.zippypoll.model.Response;
+import com.zippypoll.zippypoll.model.SortBy;
 import com.zippypoll.zippypoll.repository.PollRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PollService {
@@ -43,6 +45,10 @@ public class PollService {
 
     public void deletePoll(String pollId) {
         pollRepository.deleteById(pollId);
+    }
+
+    public void deleteAllPolls() {
+        pollRepository.deleteAll();
     }
 
     public boolean addResponse(Response response, String pollId) {
@@ -95,5 +101,64 @@ public class PollService {
 
         }
         return hashMap;
+    }
+
+    public HashMap<String, Object> getPolls(String sortBy, Integer pageId, String searchQuery, String byUser) {
+
+        System.out.println(isInEnum(sortBy, SortBy.class));
+        if(sortBy.length() == 0 || !isInEnum(sortBy, SortBy.class))
+            sortBy = "NEW_TO_OLD";
+
+        List<Poll> allPolls = pollRepository.findAll();
+
+        if(byUser != null) {
+            allPolls = allPolls.stream()
+                    .filter(poll -> poll.getCreatedBy().getId().equals(byUser))
+                    .collect(Collectors.toList());
+        }
+
+        if(searchQuery != null) {
+            String finalSearchQuery = searchQuery;
+            allPolls = allPolls.stream()
+                    .filter(poll -> poll.getTitle().contains(finalSearchQuery))
+                    .collect(Collectors.toList());
+        }
+
+        switch (sortBy) {
+            case "NEW_TO_OLD":
+                allPolls.sort((a,b) -> b.getCreatedWhen().compareTo(a.getCreatedWhen()));
+                break;
+            case "OLD_TO_NEW":
+                allPolls.sort((a,b) -> a.getCreatedWhen().compareTo(b.getCreatedWhen()));
+                break;
+            case "ALPHABETICAL":
+                allPolls.sort((a,b) -> a.getTitle().compareTo(b.getTitle()));
+                break;
+        }
+
+        Integer pageLength = 5,
+                pageStart = (pageId - 1) * pageLength,
+                pageEnd = Math.min(pageStart + pageLength, allPolls.size());
+
+        HashMap<String, Object> result = new HashMap<>();
+
+        if(pageStart < pageEnd) {
+            allPolls = allPolls.subList(pageStart, pageEnd);
+            result.put("isValid", true);
+            result.put("data", allPolls);
+            result.put("dataLength", allPolls.size());
+        }
+        else {
+            result.put("isValid", false);
+        }
+
+        return result;
+    }
+
+    public <E extends Enum<E>> boolean isInEnum(String value, Class<E> enumClass) {
+        for (E e : enumClass.getEnumConstants()) {
+            if(e.name().equals(value)) { return true; }
+        }
+        return false;
     }
 }

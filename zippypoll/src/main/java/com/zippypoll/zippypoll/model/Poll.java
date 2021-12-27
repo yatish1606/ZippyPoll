@@ -19,6 +19,7 @@ public class Poll {
     private List<Response> responses;
     private Long deadline;
     private User createdBy;
+    private Long createdWhen;
 
     public Poll(String title, String description, PollType type, List<HashMap<String, String>> options, Long deadline, User createdBy) {
         this.title = title;
@@ -92,5 +93,13 @@ public class Poll {
 
     public void setCreatedBy(User createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Long getCreatedWhen() {
+        return createdWhen;
+    }
+
+    public void setCreatedWhen(Long createdWhen) {
+        this.createdWhen = createdWhen;
     }
 }

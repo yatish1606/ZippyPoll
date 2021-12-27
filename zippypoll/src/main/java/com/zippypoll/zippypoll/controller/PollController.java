@@ -67,4 +67,20 @@ public class PollController {
         return ResponseEntity.ok(pollService.getResponseStats(pollId));
     }
 
+    @GetMapping
+    public ResponseEntity<HashMap<String, Object>> getPolls(
+            @RequestParam String sortBy,
+            @RequestParam Integer pageId,
+            @RequestParam(required = false) String searchQuery,
+            @RequestParam(required = false) String byUser
+    ) {
+        return ResponseEntity.ok(pollService.getPolls(sortBy, pageId, searchQuery, byUser));
+    }
+
+    @DeleteMapping("/all")
+    public ResponseEntity deleteAllPolls() {
+        pollService.deleteAllPolls();
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
 }
