@@ -105,7 +105,6 @@ public class PollService {
 
     public HashMap<String, Object> getPolls(String sortBy, Integer pageId, String searchQuery, String byUser) {
 
-        System.out.println(isInEnum(sortBy, SortBy.class));
         if(sortBy.length() == 0 || !isInEnum(sortBy, SortBy.class))
             sortBy = "NEW_TO_OLD";
 
@@ -114,6 +113,10 @@ public class PollService {
         if(byUser != null) {
             allPolls = allPolls.stream()
                     .filter(poll -> poll.getCreatedBy().getId().equals(byUser))
+                    .collect(Collectors.toList());
+        } else {
+            allPolls = allPolls.stream()
+                    .filter(poll -> poll.getPublic())
                     .collect(Collectors.toList());
         }
 

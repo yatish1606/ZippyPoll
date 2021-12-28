@@ -20,8 +20,10 @@ public class Poll {
     private Long deadline;
     private User createdBy;
     private Long createdWhen;
+    private Boolean isPublic;
+    private Boolean isMultipleAllowed;
 
-    public Poll(String title, String description, PollType type, List<HashMap<String, String>> options, Long deadline, User createdBy) {
+    public Poll(String title, String description, PollType type, List<HashMap<String, String>> options, Long deadline, User createdBy, Boolean isPublic, Boolean isMultipleAllowed) {
         this.title = title;
         this.description = description;
         this.type = type;
@@ -29,6 +31,8 @@ public class Poll {
         this.deadline = deadline;
         this.createdBy = createdBy;
         this.responses = null;
+        this.isPublic = isPublic;
+        this.isMultipleAllowed = isMultipleAllowed;
     }
 
     public String getId() {
@@ -101,5 +105,21 @@ public class Poll {
 
     public void setCreatedWhen(Long createdWhen) {
         this.createdWhen = createdWhen;
+    }
+
+    public Boolean getPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(Boolean aPublic) {
+        isPublic = aPublic;
+    }
+
+    public Boolean getMultipleAllowed() {
+        return isMultipleAllowed;
+    }
+
+    public void setMultipleAllowed(Boolean multipleAllowed) {
+        isMultipleAllowed = multipleAllowed;
     }
 }
