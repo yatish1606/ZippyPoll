@@ -39,6 +39,8 @@ public class PollService {
         savedPoll.setTitle(poll.getTitle());
         savedPoll.setDescription(poll.getDescription());
         savedPoll.setOptions(poll.getOptions());
+        savedPoll.setMultipleAllowed(poll.getMultipleAllowed());
+        savedPoll.setPublic(poll.getPublic());
 
         pollRepository.save(savedPoll);
     }
