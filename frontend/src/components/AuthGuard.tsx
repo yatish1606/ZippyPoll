@@ -1,14 +1,14 @@
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 
-function AuthGuard() {
+import { Home } from '../layout'
 
-    const [isAuthenticated, setIsAuthenticated] = useState(false)
+function AuthGuard({ children }: { children: JSX.Element }) {
 
-    return (
-        <div>
+    const [isAuthenticated, setIsAuthenticated] = useState(true)
 
-        </div>
-    )
+    return isAuthenticated ?
+        <Fragment>{children}</Fragment>
+        : <div></div>
 }
 
 export default AuthGuard
