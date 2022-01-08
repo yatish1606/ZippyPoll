@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@atlaskit/dropdown-menu": "^11.0.1",
+    "@atlaskit/textarea": "^4.2.4",
     "@atlaskit/textfield": "^5.1.4",
     "@atlaskit/tooltip": "^17.5.2",
     "@testing-library/jest-dom": "^5.16.1",

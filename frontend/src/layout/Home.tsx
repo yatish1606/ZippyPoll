@@ -1,51 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu'
+import React, { Fragment, useEffect, useState } from 'react'
+
 import Textfield from '@atlaskit/textfield'
 import fetchPolls from '../actions/fetchPolls'
-
-const sortByOptions: Array<{ name: string, code: string }> = [
-    {
-        name: 'Newest first',
-        code: 'NEW_TO_OLD'
-    },
-    {
-        name: 'Oldest first',
-        code: 'OLD_TO_NEW'
-    }, {
-        name: 'Alphabetical',
-        code: 'ALPHABETICAL'
-    }
-]
-
-function Home() {
+import { Poll } from '../models/Poll'
+import PollCard from '../components/PollCard'
+import ButtonPrimary from '../components/ButtonPrimary'
+import AddEditModal from '../components/AddEditModal'
 
 
-    const [sortBy, setSortBy] = useState<string>(sortByOptions[0].name)
+
+function Home({ modalToggler }: { modalToggler: (v: string) => void }) {
+
+
+    const [currentPolls, setCurrentPolls] = useState<Array<Poll>>([])
+    const [showAddEditModal, setShowAddEditModal] = useState<boolean>(false)
 
     useEffect(() => {
-        fetchPolls({ sortBy: 'NEW_TO_OLD', pageId: 1, byUser: '', searchQuery: '' }).then(() => {
-            console.log('hi')
+        fetchPolls({ sortBy: 'NEW_TO_OLD', pageId: 1, byUser: '', searchQuery: '' }).then((res) => {
+            if (res) {
+                console.log('hi')
+                setCurrentPolls([...currentPolls, ...res])
+            }
         })
     }, [])
 
     return (
-        <div className='w-full h-full flex flex-col p-6'>
-            <h2 className='font-bold tracking-wid text-slate-700 text-4xl'>Home</h2>
-            <br />
-            <div className="flex flex-row items-start text-sm tracking-wid">
-                <Textfield placeholder='Search for polls .. ' className='px-2' width={400} />
-                <div className="w-4"></div>
-                <DropdownMenu trigger={`Sort by : ${sortBy}`}>
-                    <DropdownItemGroup>
-                        {sortByOptions.map((sortBy: { name: string, code: string }, index: number) => {
-                            return <div onClick={() => setSortBy(sortBy.name)}>
-                                <DropdownItem>{sortBy.name}</DropdownItem>
-                            </div>
-                        })}
-                    </DropdownItemGroup>
-                </DropdownMenu>
+        <Fragment>
+            <div className='w-full h-full flex flex-col p-6'>
+                <div className="flex items-center justify-between">
+                    <h2 className='font-bold tracking-wid text-slate-700 text-4xl'>Home</h2>
+                    <ButtonPrimary title='Create new poll' onClick={() => setShowAddEditModal(true)} />
+                </div>
+
+                <br />
+                <div className="flex justify-between">
+                    <div className='w-1/2 flex flex-col'>
+                        <h3 className='font-semibold tracking-wid text-slate-600 text-xl'>Popular polls right now</h3>
+                        <div className="h-2"></div>
+                        {
+                            currentPolls.map((poll: Poll, index: number) => {
+                                return <PollCard poll={poll} />
+                            })
+                        }
+                    </div>
+                </div>
             </div>
-        </div>
+            <AddEditModal canShow={showAddEditModal} updateModalState={() => setShowAddEditModal(!showAddEditModal)} title='Create a new poll' isAdd />
+        </Fragment>
     )
 }
 

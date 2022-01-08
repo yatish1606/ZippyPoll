@@ -1,3 +1,4 @@
+import { rejects } from "assert"
 import axios, { AxiosResponse } from "axios"
 import { API_URL } from "../constants"
 import { Poll } from "../models/Poll"
@@ -15,7 +16,7 @@ const fetchPolls = ({
     searchQuery?: string
 }): Promise<Array<Poll> | null> => {
 
-    axios.get(
+    return axios.get(
         API_URL + 'api/poll',
         {
             params: {
@@ -26,10 +27,12 @@ const fetchPolls = ({
             }
         }
     ).then((response: AxiosResponse<any, any>) => {
-        console.log(response)
-    })
-    return new Promise<Array<Poll> | null>((resolve, reject) => {
-
+        return new Promise<Array<Poll> | null>((resolve, reject) => {
+            if (response.data.isValid && response.data.dataLength && response.status === 200) {
+                resolve(response.data.data)
+            } else
+                reject([])
+        })
     })
 }
 

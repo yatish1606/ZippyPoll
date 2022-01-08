@@ -15,7 +15,7 @@ public class Poll {
     private String title;
     private String description;
     private PollType type;
-    private List<HashMap<String, String>> options;
+    private HashMap<String, String> options;
     private List<Response> responses;
     private Long deadline;
     private User createdBy;
@@ -23,7 +23,7 @@ public class Poll {
     private Boolean isPublic;
     private Boolean isMultipleAllowed;
 
-    public Poll(String title, String description, PollType type, List<HashMap<String, String>> options, Long deadline, User createdBy, Boolean isPublic, Boolean isMultipleAllowed) {
+    public Poll(String title, String description, PollType type, HashMap<String, String> options, Long deadline, User createdBy, Boolean isPublic, Boolean isMultipleAllowed) {
         this.title = title;
         this.description = description;
         this.type = type;
@@ -67,11 +67,11 @@ public class Poll {
         this.type = type;
     }
 
-    public List<HashMap<String, String>> getOptions() {
+    public HashMap<String, String> getOptions() {
         return options;
     }
 
-    public void setOptions(List<HashMap<String, String>> options) {
+    public void setOptions(HashMap<String, String> options) {
         this.options = options;
     }
 

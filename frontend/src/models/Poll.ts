@@ -9,7 +9,7 @@ export interface Poll {
     title: string,
     description?: string | null,
     type: PollType,
-    options: Array<{key: string, value: string}>,
+    options: Map<string, string>,
     responses: Array<Response> | null,
     deadline: BigInt,
     createdBy: User,
