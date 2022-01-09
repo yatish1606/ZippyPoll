@@ -3,9 +3,10 @@
 @tailwind utilities;
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/@xz/fonts@1/serve/plus-jakarta-text.min.css");
 
 * {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Plus Jakarta Text','Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {

@@ -35,7 +35,7 @@ function PollCard({ poll }: { poll: Poll }) {
                             const activeColor = selectedOption?.hasOwnProperty(key) ? 'text-green-600 border-green-600' : ''
                             const bgColor = selectedOption?.hasOwnProperty(key) ? 'bg-green-600' : ''
                             return (
-                                <div className='flex flex-row items-center mt-3 text-slate-500 hover:text-slate-700 transition-all w-fit' onClick={() => setSelectedOption(selectedOption?.hasOwnProperty(key) ? {} : { [key]: value })}>
+                                <div className='flex flex-row items-center mt-3 text-slate-500 hover:text-slate-700 transition-all w-fit cursor-pointer' onClick={() => setSelectedOption(selectedOption?.hasOwnProperty(key) ? {} : { [key]: value })}>
                                     <div className={`h-4 w-4 rounded-full border-2 border-slate-300 ${activeColor} flex items-center justify-center transition-all`}>
                                         <div className={`h-2 w-2 rounded-full ${bgColor} bg-green-600 transition-all`} style={{ display: activeColor.length ? 'flex' : 'none' }}></div>
                                     </div>

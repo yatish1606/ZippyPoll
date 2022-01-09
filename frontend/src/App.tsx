@@ -34,6 +34,7 @@ function App(): JSX.Element {
   return (
 
     <HashRouter>
+      <Route path="/" exact component={() => <div>home</div>} />
       <AuthGuard>
         {/* <ModalContext.Provider value={{ showAddEditModal, toggleModal }}> */}
         <Fragment>
@@ -42,7 +43,7 @@ function App(): JSX.Element {
             <div className="flex-1 flex-col flex">
               <SearchBar />
               <Switch>
-                <Route path="/home" component={() => <Home modalToggler={setModalType} />} />
+                <Route path="/home" exact component={() => <Home modalToggler={setModalType} />} />
               </Switch>
             </div>
             {/* {modalElement} */}
