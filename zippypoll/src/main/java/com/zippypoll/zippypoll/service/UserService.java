@@ -41,4 +41,13 @@ public class UserService {
     public void deleteUser(String userId) {
         userRepository.deleteById(userId);
     }
+
+    public User findUserByEmail(String email) {
+        for (User user: userRepository.findAll()) {
+            if(user.getEmail().equals(email)) {
+                return user;
+            }
+        }
+        return null;
+    }
 }

@@ -5,11 +5,9 @@ import com.zippypoll.zippypoll.service.AuthService;
 import com.zippypoll.zippypoll.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin()
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -22,10 +20,13 @@ public class AuthController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody String email) {
+    @PostMapping("/login/{email}")
+    public ResponseEntity login(@PathVariable String email) {
+        System.out.println("email from param" + email);
         if(authService.isExistingUser(email)) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        } else return ResponseEntity.ok().build();
+            return ResponseEntity.ok(userService.findUserByEmail(email));
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

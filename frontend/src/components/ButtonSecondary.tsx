@@ -1,17 +1,24 @@
 import { Add } from 'iconsax-react'
-import React from 'react'
+import React, { Fragment } from 'react'
 
 
 interface ButtonSecondaryProps {
-    title: string,
+    title?: string,
     disabled?: boolean,
-    onClick?: () => void
+    onClick?: () => void,
+    iconBefore?: JSX.Element | Element,
+    className?: string
 }
 
-function ButtonSecondary({ title, disabled = false, onClick }: ButtonSecondaryProps) {
+function ButtonSecondary({ title, disabled = false, onClick, iconBefore, className = "" }: ButtonSecondaryProps) {
     return (
-        <div className={`flex flex-row items-center rounded-sm py-2 px-4 ${disabled ? 'bg-slate-400 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200'} transition-all cursor-pointer w-fit`} onClick={onClick}>
-            <p className="text-slate-500 font-medium text-sm flex items-center"><Add size={20} className="-ml-1 stroke-2 font-bold" /><div className="w-2"></div>{title}</p>
+        <div className={`justify-center text-slate-500 font-medium text-sm flex flex-row items-center rounded-sm py-2 ${title ? 'px-4' : 'px-2'} ${disabled ? 'bg-slate-400 cursor-not-allowed' : 'bg-gray-100 hover:bg-gray-200'} transition-all cursor-pointer w-fit ${className}`} onClick={onClick}>
+
+            <div className={title ? `-ml-1` : ''}>{iconBefore}</div>
+            {title && iconBefore ? <div className="w-2"></div> : null}
+            <div className="text-slate-500 font-medium text-sm flex items-center">
+                {title}
+            </div>
         </div>
     )
 }

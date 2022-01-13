@@ -1,24 +1,20 @@
 import React, { Fragment, useEffect, useState } from 'react'
-
-import Textfield from '@atlaskit/textfield'
 import fetchPolls from '../actions/fetchPolls'
 import { Poll } from '../models/Poll'
 import PollCard from '../components/PollCard'
-import ButtonPrimary from '../components/ButtonPrimary'
-import AddEditModal from '../components/AddEditModal'
+import { useAuth } from '../context/UserContext'
+import { Navigate } from 'react-router-dom'
+import { useModal } from '../context/ModalContext'
 
-
-
-function Home({ modalToggler }: { modalToggler: (v: string) => void }) {
-
+function Home() {
 
     const [currentPolls, setCurrentPolls] = useState<Array<Poll>>([])
-    const [showAddEditModal, setShowAddEditModal] = useState<boolean>(false)
+    const { userAuthState } = useAuth()
+    const { modalName } = useModal()
 
     useEffect(() => {
         fetchPolls({ sortBy: 'NEW_TO_OLD', pageId: 1, byUser: '', searchQuery: '' }).then((res) => {
             if (res) {
-                console.log('hi')
                 setCurrentPolls([...currentPolls, ...res])
             }
         })
@@ -26,12 +22,12 @@ function Home({ modalToggler }: { modalToggler: (v: string) => void }) {
 
     return (
         <Fragment>
-            <div className='w-full h-full flex flex-col p-6'>
+            <div className='w-full h-full flex flex-col p-6 overflow-y-scroll'>
                 <div className="flex items-center justify-between">
                     <h2 className='font-bold tracking-wid text-slate-700 text-4xl'>Home</h2>
-                    <ButtonPrimary title='Create new poll' onClick={() => setShowAddEditModal(true)} />
+                    {/* <ButtonPrimary title='Create new poll' onClick={() => setModal('ADD')} /> */}
                 </div>
-
+                {modalName}
                 <br />
                 <div className="flex justify-between">
                     <div className='w-1/2 flex flex-col'>
@@ -39,13 +35,12 @@ function Home({ modalToggler }: { modalToggler: (v: string) => void }) {
                         <div className="h-2"></div>
                         {
                             currentPolls.map((poll: Poll, index: number) => {
-                                return <PollCard poll={poll} />
+                                return <PollCard key={index} poll={poll} />
                             })
                         }
                     </div>
                 </div>
             </div>
-            <AddEditModal canShow={showAddEditModal} updateModalState={() => setShowAddEditModal(!showAddEditModal)} title='Create a new poll' isAdd />
         </Fragment>
     )
 }

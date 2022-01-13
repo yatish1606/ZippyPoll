@@ -3,6 +3,7 @@ import React, { Fragment, Ref, useEffect, useState } from 'react'
 import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu'
 import ButtonSecondary from './ButtonSecondary'
 import ButtonPrimary from './ButtonPrimary'
+import { useAuth } from '../context/UserContext'
 
 interface AddEditModalProps {
     title: string,
@@ -87,6 +88,7 @@ function AddEditModal({
     const [description, setDescription] = useState<string>('')
     const [deadline, setDeadline] = useState<Deadline>(deadlines[0])
     const [resultsHidden, setResultsHidden] = useState<boolean>(false)
+    const { userAuthState } = useAuth()
 
     useEffect(() => {
         canShow = false
@@ -130,14 +132,20 @@ function AddEditModal({
             isPublic,
             isMultipleAllowed,
             deadline: new Date().getTime() + deadline.ms,
-            options
+            options: new Map(
+                Array
+                    .from(options.entries())
+                    .filter((entry: [string, string]) => entry[1].length)
+                    .sort(([key1, _], [key2, __]) => parseInt(key1) - parseInt(key2))
+                    .map((entry: [string, string], index: number) => [index + '', entry[1]])),
+            createdBy: userAuthState
         }
         console.log(data)
     }
 
 
     return canShow ? (
-        <div className='w-screen h-screen absolute bg-black/70 z-100 flex flex-row justify-end transition-all -translate-x-20 backdrop-blur-sm delay-200' style={{ display: canShow ? 'flex' : 'none' }}>
+        <div className='w-screen h-screen absolute bg-black/70 z-100 flex flex-row justify-end transition-all  backdrop-blur-sm delay-200' style={{ display: canShow ? 'flex' : 'none' }}>
             <div className='bg-white w-1/2 h-full flex flex-col ml-1/2 p-8 transition-all duration-300 delay-1000 ease-out overflow-y-scroll'>
                 <form action="POST" className='w-full flex flex-col transition-all'>
                     <div className="flex flex-row justify-between items-center">

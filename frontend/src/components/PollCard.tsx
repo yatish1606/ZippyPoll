@@ -4,24 +4,9 @@ import { Poll } from '../models/Poll'
 import { isObjectEmpty } from '../utils'
 import ButtonPrimary from './ButtonPrimary'
 
-const Option = ({ keyy, value, setOption, isActive }: { keyy: string, value: string, setOption?: () => void, isActive: boolean }) => {
-
-    const activeColor = isActive ? 'text-green-400' : ''
-    console.log(isActive, keyy, value)
-    return <div className='flex flex-row items-center mt-2 text-slate-500 hover:text-slate-700 transition-all' onClick={setOption}>
-        <div className='h-4 w-4 rounded-full border-2 border-slate-300'></div>
-        <div className="w-4"></div>
-        <p className={`text-sm font-medium tracking-wide ${activeColor}`}>{value}</p>
-    </div>
-    // onClick={() => setSelectedOption({ key, value: '' })}
-}
-
 function PollCard({ poll }: { poll: Poll }) {
 
-    // console.log(poll)
     const [selectedOption, setSelectedOption] = useState<Object | null>(null)
-
-    // console.log(selectedOption)
 
     return (
         <div className='my-2 p-5 bg-slate-100 transition-all rounded-sm flex flex-col w-full'>
@@ -30,12 +15,12 @@ function PollCard({ poll }: { poll: Poll }) {
             <form action="POST">
                 {
                     poll.isMultipleAllowed ? null
-                        : Object.entries(poll.options).map((entry: [string, string]) => {
+                        : Object.entries(poll.options).map((entry: [string, string], index: number) => {
                             const [key, value] = entry
                             const activeColor = selectedOption?.hasOwnProperty(key) ? 'text-green-600 border-green-600' : ''
                             const bgColor = selectedOption?.hasOwnProperty(key) ? 'bg-green-600' : ''
                             return (
-                                <div className='flex flex-row items-center mt-3 text-slate-500 hover:text-slate-700 transition-all w-fit cursor-pointer' onClick={() => setSelectedOption(selectedOption?.hasOwnProperty(key) ? {} : { [key]: value })}>
+                                <div key={index} className='flex flex-row items-center mt-3 text-slate-500 hover:text-slate-700 transition-all w-fit cursor-pointer' onClick={() => setSelectedOption(selectedOption?.hasOwnProperty(key) ? {} : { [key]: value })}>
                                     <div className={`h-4 w-4 rounded-full border-2 border-slate-300 ${activeColor} flex items-center justify-center transition-all`}>
                                         <div className={`h-2 w-2 rounded-full ${bgColor} bg-green-600 transition-all`} style={{ display: activeColor.length ? 'flex' : 'none' }}></div>
                                     </div>
@@ -61,7 +46,7 @@ function PollCard({ poll }: { poll: Poll }) {
                             }
                         </div>
                         <div className="w-2"></div>
-                        <p className="text-xs text-slate-400 font-normal tracking-wide">created by <span className='text-green-600 cursor-pointer font-medium'>{poll.createdBy.firstName} {poll.createdBy.lastName}</span></p>
+                        <p className="text-xs text-slate-400 font-normal tracking-wide">asked by <span className='text-green-600 cursor-pointer font-medium'>{poll.createdBy.firstName} {poll.createdBy.lastName}</span></p>
                     </div>
                 </div>
             </form>

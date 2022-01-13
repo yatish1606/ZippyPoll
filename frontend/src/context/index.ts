@@ -1,5 +1,5 @@
-import { ModalContext } from "./ModalContext"
+// import { ModalContext } from "./ModalContext"
 
 export {
-    ModalContext
+    
 }
