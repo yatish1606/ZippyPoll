@@ -54,7 +54,7 @@ function Sidebar() {
     }
 
     return (
-        <div className={`w-full h-full flex flex-col items-center transition-all w-20 bg-white border-r-2 border-r-gray-200`}>
+        <div className={`w-full h-full flex flex-col items-center transition-all w-20 dark:bg-neutral-900 bg-white border-r-2 border-r-gray-200 dark:border-gray-700`}>
             <div className="w-full h-16 flex items-center justify-center ">
                 <Logo />
             </div>
@@ -65,10 +65,10 @@ function Sidebar() {
                         sidebarOptions.map((option: sidebarOption, index: number) => {
                             const isActive = window.location.href.includes(option.link)
                             return (
-                                <div key={index} className={`transition-all w-full cursor-pointer hover:bg-slate-100 rounded-md mx-1 my-1 ${isActive ? 'bg-green-100 text-green-600 hover:bg-green-100' : ''}`} onClick={() => setActiveLink(option.link)}>
+                                <div key={index} className={`transition-all w-full cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md mx-1 my-1 ${isActive ? 'bg-green-500/10 text-green-600 hover:bg-green-500/10' : ''}`} onClick={() => setActiveLink(option.link)}>
                                     <Link to={option.link}>
                                         <Tooltip content={option.description} position='right' key={index}>
-                                            <div className={`transition-all w-full flex flex-col items-center py-2 my-1 px-1 text-slate-500 hover:text-slate-600 ${isActive ? 'text-green-600 hover:text-green-700' : ''}`}>
+                                            <div className={`transition-all w-full flex flex-col items-center py-2 my-1 px-1 text-slate-500 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300 ${isActive ? 'text-green-600 hover:text-green-700 dark:text-green-600 dark:hover:text-green-600' : ''}`}>
                                                 {option.icon}
                                                 <div className="h-2"></div>
                                                 <Fragment>
@@ -92,7 +92,7 @@ function Sidebar() {
                                 <div className="h-2"></div>
                                 <Fragment>
                                     <div className="w-4"></div>
-                                    <p className={`text-xs tracking-wide text-center transition-all ${window.location.href.includes('/account') ? 'font-medium' : 'font-medium'}`}>Account</p>
+                                    <p className={`text-xs tracking-wide text-center ${window.location.href.includes('/account') ? 'font-medium' : 'font-medium'}`}>Account</p>
                                 </Fragment>
                             </div>
                         </Tooltip>

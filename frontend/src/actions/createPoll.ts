@@ -4,13 +4,15 @@ import { API_URL } from "../constants"
 
 const createPoll = (poll: Poll): Promise<any> => {
     
-    return axios.post(API_URL + '/api/poll', {
+    return axios.post(API_URL + 'api/poll', {
         ...poll
     })
     .then(res => {
         console.log(res)
         return new Promise<any>((resolve, reject) => {
-            resolve(res.data)
+            if(res.status === 201)
+                resolve(res.data)
+            else reject()
         })
     })
     .catch(() => console.log('err'))

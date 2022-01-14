@@ -6,11 +6,25 @@ import Sidebar from './Sidebar'
 import { Link, useLocation } from 'react-router-dom'
 import ButtonPrimary from './ButtonPrimary'
 
+const dontShowNoAuth: Array<string> = ['/login', '/poll/']
+
+const isNoAuthMessageScreen = (): boolean => {
+    dontShowNoAuth.forEach((str: string) => {
+        if (window.location.pathname.includes(str)) {
+            console.log(str, window.location.pathname.includes(str))
+            return true
+        }
+
+    })
+    return false
+}
+
 function AuthGuard({ children }: { children: JSX.Element }) {
 
     const { userAuthState, setUserAuth } = useAuth()
     const { modalName, setModal } = useModal()
     const location = useLocation()
+
 
     const renderModalToggler = (): JSX.Element => {
         console.log(modalName)
@@ -30,7 +44,7 @@ function AuthGuard({ children }: { children: JSX.Element }) {
                 {renderModalToggler()}
             </div>
         </Fragment>
-        : location.pathname === '/login'
+        : window.location.pathname.includes('/poll') || window.location.pathname.includes('/login')
             ? null
             : <div className="w-full h-screen flex flex-col items-center justify-center py-24">
                 <div className="flex-col flex items-center">

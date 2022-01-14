@@ -6,6 +6,7 @@ import SearchBar from './components/SearchBar'
 import { ModalProvider } from './context/ModalContext'
 import { AuthProvider, useAuth } from './context/UserContext'
 import { Home, Login, Account, NotFound } from './layout'
+import Poll from './layout/Poll'
 
 function App(): JSX.Element {
 
@@ -18,6 +19,7 @@ function App(): JSX.Element {
         <ModalProvider>
           <Routes>
             <Route path="/login" element={<Login />} />
+            <Route path="/poll/:pollId" element={<Poll />} />
           </Routes>
           <AuthGuard>
             <div className="flex-1 flex-col flex">

@@ -22,7 +22,7 @@ function Home() {
 
     return (
         <Fragment>
-            <div className='w-full h-full flex flex-col p-6 overflow-y-scroll'>
+            <div className='w-full h-full flex flex-col p-6 overflow-y-scroll bg-white dark:bg-neutral-900'>
                 <div className="flex items-center justify-between">
                     <h2 className='font-bold tracking-wid text-slate-700 text-4xl'>Home</h2>
                     {/* <ButtonPrimary title='Create new poll' onClick={() => setModal('ADD')} /> */}

@@ -1,19 +1,19 @@
 import { User } from "./User";
 
-enum PollType {
-    RADIO, CHECKBOX
+export enum PollType {
+    "RADIO", "CHECKBOX"
 }
 
 export interface Poll {
     id?: string,
     title: string,
     description?: string | null,
-    type: PollType,
-    options: Map<string, string>,
+    type: string,
+    options: Map<string, string> | Object,
     responses: Array<Response> | null,
-    deadline: BigInt,
+    deadline: number,
     createdBy: User,
-    createdWhen: BigInt,
+    createdWhen: number,
     isPublic: boolean,
-    isMultipleAllowed: boolean
+    multipleAllowed: boolean
 }
