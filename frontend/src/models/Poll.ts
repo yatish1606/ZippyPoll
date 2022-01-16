@@ -15,5 +15,6 @@ export interface Poll {
     createdBy: User,
     createdWhen: number,
     isPublic: boolean,
-    multipleAllowed: boolean
+    multipleAllowed: boolean,
+    showResults: boolean
 }

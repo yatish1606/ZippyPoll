@@ -136,7 +136,7 @@ function AddEditModal({
             description: (description.length && description.trim().length > 100 ? description.trim().slice(0, 100).concat(' ... ') : description) || null,
             createdWhen: new Date().getTime(),
             type: isMultipleAllowed ? "CHECKBOX" : "RADIO",
-            isPublic,
+            isPublic: isPublic,
             multipleAllowed: isMultipleAllowed,
             deadline: new Date().getTime() + deadline.ms,
             options: Object.fromEntries(
@@ -146,7 +146,8 @@ function AddEditModal({
                     .sort(([key1, _], [key2, __]) => parseInt(key1) - parseInt(key2))
                     .map((entry: [string, string], index: number) => [index + '', entry[1]])),
             createdBy: userAuthState.user,
-            responses: null
+            responses: null,
+            showResults: resultsHidden
         }
         console.log(data)
         createPoll(data)
@@ -274,9 +275,7 @@ function AddEditModal({
                                 <p className='font-normal text-xs tracking-wid text-slate-400'>You will be able to close the poll or extend it anytime</p>
                             </div>
                         </form>
-
                         :
-
                         <div className="flex h-full w-full flex-col items-center">
                             <div className="flex flex-row justify-between items-center w-full">
                                 <div className="flex flex-row items-center">

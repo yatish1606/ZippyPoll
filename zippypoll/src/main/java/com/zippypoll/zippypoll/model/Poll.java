@@ -22,8 +22,9 @@ public class Poll {
     private Long createdWhen;
     private Boolean isPublic;
     private Boolean isMultipleAllowed;
+    private Boolean showResults;
 
-    public Poll(String title, String description, PollType type, HashMap<String, String> options, Long deadline, User createdBy, Boolean isPublic, Boolean isMultipleAllowed) {
+    public Poll(String title, String description, PollType type, HashMap<String, String> options, Long deadline, User createdBy, Boolean isPublic, Boolean isMultipleAllowed, Boolean showResults) {
         this.title = title;
         this.description = description;
         this.type = type;
@@ -33,6 +34,7 @@ public class Poll {
         this.responses = null;
         this.isPublic = isPublic;
         this.isMultipleAllowed = isMultipleAllowed;
+        this.showResults = showResults;
     }
 
     public String getId() {
@@ -121,5 +123,13 @@ public class Poll {
 
     public void setMultipleAllowed(Boolean multipleAllowed) {
         isMultipleAllowed = multipleAllowed;
+    }
+
+    public Boolean getShowResults() {
+        return showResults;
+    }
+
+    public void setShowResults(Boolean showResults) {
+        this.showResults = showResults;
     }
 }

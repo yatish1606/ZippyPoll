@@ -61,11 +61,11 @@ public class PollService {
 
         if (savedPoll.getResponses() != null) {
 
-            for (Response r: savedPoll.getResponses()) {
-                if(r.getIpAddress().equals(response.getIpAddress())) {
-                    return false;
-                }
-            }
+//            for (Response r: savedPoll.getResponses()) {
+//                if(r.getIpAddress().equals(response.getIpAddress())) {
+//                    return false;
+//                }
+//            }
             currentResponses.addAll(savedPoll.getResponses());
         }
         currentResponses.add(response);
@@ -81,28 +81,65 @@ public class PollService {
         pollRepository.save(savedPoll);
     }
 
-    public HashMap<HashMap<String, String>, Integer> getResponseStats(String pollId) {
+    public HashMap<String, HashMap<String, Double>> getResponseStats(String pollId) {
         Poll savedPoll = pollRepository.findById(pollId)
                 .orElseThrow(() -> new RuntimeException(String.format("Cannot update poll with id as ", pollId)));
-        List<Response> responses = new ArrayList<Response>();
-        HashMap<HashMap<String, String>, Integer> hashMap = new HashMap<HashMap<String, String>, Integer>();
-//        for (HashMap<String, String> currentHashObject: savedPoll.getOptions()) {
-//            for (HashMap.Entry<String, String> currentHash: currentHashObject.entrySet()) {
-//                HashMap<String, String> keyValuePair = new HashMap<String, String>();
-//                keyValuePair.put(currentHash.getKey(), currentHash.getValue());
-//                hashMap.put(keyValuePair, 0);
-//            }
-//        }
+        List<Response> responses = new ArrayList<>();
+        HashMap<String, HashMap<String, Double>> list = new HashMap<>();
+        HashMap<String, Integer> votes = new HashMap<>();
+
+        // every list item will contain a hashmap with key as option number
+        // and value as another hashmap containing properties as
+        // text of option, percentage votes and count of votes
+        // so for each option calculate total votes for that option
+        // and divide by total votes of all options
+
         if(savedPoll.getResponses() != null) {
             responses.addAll(savedPoll.getResponses());
-            for (Response response: responses) {
-                HashMap<String, String> currentEntry = response.getSelectedOption();
-                hashMap.merge(currentEntry, 1, Integer::sum);
+            if(responses.size() != 0) {
+                for (Response currentResponse: responses) {
+                    Iterator<String> set = currentResponse.getSelectedOption().keySet().iterator();
+                    while(set.hasNext()) {
+                        String currentKey = set.next();
+                        if(votes.containsKey(currentKey)) {
+                            // only increment
+                            votes.put(currentKey, votes.get(currentKey) + 1);
+                        } else {
+                            // doesn't contain a key, so set with new key name and value 1
+                            votes.put(currentKey, 1);
+                        }
+                    }
+                }
+            }
+            double totalResponses = responses.size();
+            votes.entrySet().forEach(entry -> {
+                System.out.println(entry.getKey() + " " + entry.getValue());
+                HashMap<String, Double> properties = new HashMap<>();
+                properties.put("count", new Double(entry.getValue()));
+                properties.put("percentage", (double) Math.round((((double) entry.getValue() / totalResponses)*100) * 100.0 / 100.0));
+                list.put(entry.getKey(), properties);
+            });
+            // if no one voted for a particular option, then it wont get added to votes
+            // so for those options, put 0 for count and percentage
+            Iterator<String> set = savedPoll.getOptions().keySet().iterator();
+            while(set.hasNext()) {
+                String currentKey = set.next();
+                if(!list.containsKey(currentKey)) {
+                    HashMap<String, Double> emptyProps = new HashMap<>();
+                    emptyProps.put("count", (double) 0);
+                    emptyProps.put("percentage", (double) 0);
+                    list.put(currentKey, emptyProps);
+                }
             }
         } else {
-
+            savedPoll.getOptions().keySet().forEach(entry -> {
+                HashMap<String, Double> emptyProps = new HashMap<>();
+                emptyProps.put("count", (double) 0);
+                emptyProps.put("percentage", (double) 0);
+                list.put(entry, emptyProps);
+            });
         }
-        return hashMap;
+        return list;
     }
 
     public HashMap<String, Object> getPolls(String sortBy, Integer pageId, String searchQuery, String byUser) {

@@ -64,7 +64,7 @@ public class PollController {
     }
 
     @GetMapping("/{pollId}/stats")
-    public ResponseEntity<HashMap<HashMap<String, String>, Integer>> getPollStats(@PathVariable String pollId) {
+    public ResponseEntity<HashMap<String, HashMap<String, Double>>> getPollStats(@PathVariable String pollId) {
         return ResponseEntity.ok(pollService.getResponseStats(pollId));
     }
 
